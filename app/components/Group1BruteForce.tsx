@@ -95,33 +95,7 @@ export default function Group1BruteForce() {
         </div>
       </section>
 
-      {/* FIBONACCI DEMO */}
-      <section className="py-20 px-4 sm:px-8">
-        <div className="max-w-md mx-auto bg-neutral-900 p-6 rounded">
-          <h3 className="text-center font-bold text-amber-400 mb-4">
-            Fibonacci Calculator
-          </h3>
-
-          <div className="flex justify-center gap-3">
-            <input
-              type="number"
-              value={n}
-              onChange={(e) => setN(Number(e.target.value))}
-              className="w-24 p-2 border border-amber-400 bg-black text-amber-400"
-            />
-            <button
-              onClick={calculateFib}
-              className="bg-amber-400 text-black px-4 py-2 font-bold"
-            >
-              Calculate
-            </button>
-          </div>
-
-          <p className="text-center mt-4 text-amber-300">
-            Result: {result}
-          </p>
-        </div>
-      </section>
+      
 
       {/* GREEDY ALGORITHMS */}
       <section className="bg-black py-20 px-4 sm:px-8">
@@ -257,6 +231,33 @@ export default function Group1BruteForce() {
 
   </div>
 </section>
+{/* FIBONACCI DEMO */}
+      <section className="py-20 px-4 sm:px-8">
+        <div className="max-w-md mx-auto bg-neutral-900 p-6 rounded">
+          <h3 className="text-center font-bold text-amber-400 mb-4">
+            Fibonacci Calculator
+          </h3>
+
+          <div className="flex justify-center gap-3">
+            <input
+              type="number"
+              value={n}
+              onChange={(e) => setN(Number(e.target.value))}
+              className="w-24 p-2 border border-amber-400 bg-black text-amber-400"
+            />
+            <button
+              onClick={calculateFib}
+              className="bg-amber-400 text-black px-4 py-2 font-bold"
+            >
+              Calculate
+            </button>
+          </div>
+
+          <p className="text-center mt-4 text-amber-300">
+            Result: {result}
+          </p>
+        </div>
+      </section>
 
         
           
