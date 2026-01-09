@@ -2,18 +2,143 @@
 
 import Image from "next/image";
 import { useState } from "react";
-
+const INF = 999999;
 export default function Group1BruteForce() {
-  const [n, setN] = useState(10);
-  const [result, setResult] = useState(55);
+// ================= BRANCH & BOUND (TSP) =================
 
-  const calculateFib = () => {
-    let a = 0, b = 1;
-    for (let i = 2; i <= n; i++) {
-      [a, b] = [b, a + b];
+const INF = 999999;
+
+const [matrixInput, setMatrixInput] = useState(
+`0 20 42 35
+20 0 30 34
+42 30 0 12
+35 34 12 0`
+);
+
+const [tspResult, setTspResult] = useState<{
+  path: number[];
+  cost: number;
+} | null>(null);
+
+function parseMatrix(text: string): number[][] {
+  return text
+    .trim()
+    .split("\n")
+    .map(row => row.trim().split(/\s+/).map(Number));
+}
+
+function cloneMatrix(m: number[][]): number[][] {
+  return m.map(r => [...r]);
+}
+
+function reduceMatrix(matrix: number[][]): number {
+  const n = matrix.length;
+  let cost = 0;
+
+  // Row reduction
+  for (let i = 0; i < n; i++) {
+    const minVal = Math.min(...matrix[i]);
+    if (minVal !== INF && minVal > 0) {
+      cost += minVal;
+      for (let j = 0; j < n; j++) matrix[i][j] -= minVal;
     }
-    setResult(n <= 1 ? n : b);
-  };
+  }
+
+  // Column reduction
+  for (let j = 0; j < n; j++) {
+    const col = matrix.map(r => r[j]);
+    const minVal = Math.min(...col);
+    if (minVal !== INF && minVal > 0) {
+      cost += minVal;
+      for (let i = 0; i < n; i++) matrix[i][j] -= minVal;
+    }
+  }
+
+  return cost;
+}
+
+function solveTSP() {
+  let matrix = parseMatrix(matrixInput);
+  const n = matrix.length;
+
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (matrix[i][j] === 0 && i !== j) matrix[i][j] = INF;
+    }
+  }
+
+  const start = 0;
+  const rootMatrix = cloneMatrix(matrix);
+  const rootCost = reduceMatrix(rootMatrix);
+
+  let pq = [{
+    path: [start],
+    matrix: rootMatrix,
+    cost: rootCost,
+    vertex: start
+  }];
+
+  let bestCost = INF;
+  let bestPath: number[] = [];
+
+  while (pq.length) {
+    pq.sort((a, b) => a.cost - b.cost);
+    const node = pq.shift()!;
+    if (node.cost >= bestCost) continue;
+
+    if (node.path.length === n) {
+      if (matrix[node.vertex][start] !== INF) {
+        const finalCost = node.cost + matrix[node.vertex][start];
+        if (finalCost < bestCost) {
+          bestCost = finalCost;
+          bestPath = [...node.path, start];
+        }
+      }
+      continue;
+    }
+
+    for (let v = 0; v < n; v++) {
+      if (!node.path.includes(v) && node.matrix[node.vertex][v] !== INF) {
+        const newMatrix = cloneMatrix(node.matrix);
+
+        for (let i = 0; i < n; i++) {
+          newMatrix[node.vertex][i] = INF;
+          newMatrix[i][v] = INF;
+        }
+
+        newMatrix[v][start] = INF;
+
+        const newCost =
+          node.cost +
+          matrix[node.vertex][v] +
+          reduceMatrix(newMatrix);
+
+        pq.push({
+          path: [...node.path, v],
+          matrix: newMatrix,
+          cost: newCost,
+          vertex: v
+        });
+      }
+    }
+  }
+
+  setTspResult({ path: bestPath, cost: bestCost });
+}
+
+
+// ================= FIBONACCI =================
+
+const [fibN, setFibN] = useState(10);
+const [fibResult, setFibResult] = useState(55);
+
+const calculateFib = () => {
+  let a = 0, b = 1;
+  for (let i = 2; i <= fibN; i++) {
+    [a, b] = [b, a + b];
+  }
+  setFibResult(fibN <= 1 ? fibN : b);
+};
 
   return (
     <div className="bg-black text-white">
@@ -241,8 +366,8 @@ export default function Group1BruteForce() {
           <div className="flex justify-center gap-3">
             <input
               type="number"
-              value={n}
-              onChange={(e) => setN(Number(e.target.value))}
+              value={fibN}
+              onChange={(e) => setFibN(Number(e.target.value))}
               className="w-24 p-2 border border-amber-400 bg-black text-amber-400"
             />
             <button
@@ -254,7 +379,7 @@ export default function Group1BruteForce() {
           </div>
 
           <p className="text-center mt-4 text-amber-300">
-            Result: {result}
+            FibonacciResult: {fibResult}
           </p>
         </div>
       </section>
@@ -380,6 +505,8 @@ export default function Group1BruteForce() {
       <li>Scheduling and resource allocation</li>
     </ul>
 
+    
+
     {/* REMOVE OR REPLACE VIDEO HERE IF NEEDED */}
     <div className="aspect-video rounded-lg overflow-hidden">
       <iframe
@@ -390,7 +517,57 @@ export default function Group1BruteForce() {
       />
     </div>
 
+
   </div>
+  <section className="bg-black text-yellow-400 py-20 px-4">
+  <div className="max-w-4xl mx-auto space-y-6">
+
+    <h1 className="text-3xl sm:text-4xl font-bold text-center">
+      Branch & Bound – Traveling Salesman Problem
+    </h1>
+
+    <p className="text-gray-300 text-center">
+      Enter an adjacency matrix (use 0 or INF where no path exists)
+    </p>
+
+    <textarea
+      className="w-full h-32 p-4 rounded-lg bg-neutral-900 text-yellow-400 border border-yellow-400 outline-none"
+      value={matrixInput}
+      onChange={(e) => setMatrixInput(e.target.value)}
+    />
+
+    <div className="text-center">
+      <button
+        onClick={solveTSP}
+        className="bg-yellow-400 text-black px-6 py-3 font-bold rounded-lg hover:bg-yellow-300 transition"
+      >
+        Run Branch & Bound
+      </button>
+    </div>
+
+    {tspResult && (
+      <div className="bg-neutral-900 border border-yellow-400 rounded-lg p-6 space-y-2">
+        <h2 className="text-xl font-bold">Result</h2>
+
+        <p>
+          <strong>Best Path:</strong>{" "}
+          <span className="font-mono">
+            {tspResult.path.join(" → ")}
+          </span>
+        </p>
+
+        <p>
+          <strong>Total Cost:</strong>{" "}
+          <span className="font-mono">
+            {tspResult.cost}
+          </span>
+        </p>
+      </div>
+    )}
+
+  </div>
+</section>
+
 </section>
 
 
