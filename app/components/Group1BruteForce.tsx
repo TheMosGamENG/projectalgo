@@ -569,7 +569,124 @@ const calculateFib = () => {
 </section>
 
 </section>
+<main className="bg-black text-gray-200">
 
+      {/* HEADER */}
+      <header className="bg-gradient-to-b from-black to-yellow-400 text-center py-20 px-4">
+        <h1 className="text-4xl sm:text-6xl font-bold text-yellow-400">
+          Divide and Conquer
+        </h1>
+        <p className="mt-4 text-lg sm:text-xl text-black font-semibold">
+          Algorithm Design Technique using C Language
+        </p>
+      </header>
+
+      {/* CONTENT */}
+      <section className="max-w-5xl mx-auto px-4 py-20 space-y-10">
+
+        {/* WHAT IS */}
+        <div className="bg-neutral-900 p-6 rounded-xl border border-yellow-400">
+          <h2 className="text-2xl font-bold text-yellow-400 mb-3">
+            What is Divide and Conquer?
+          </h2>
+          <p>
+            Divide and Conquer is an algorithmic technique where a problem is
+            broken into smaller subproblems, each subproblem is solved, and the
+            results are combined to solve the original problem.
+          </p>
+        </div>
+
+        {/* STEPS */}
+        <div className="bg-neutral-900 p-6 rounded-xl border border-yellow-400">
+          <h2 className="text-2xl font-bold text-yellow-400 mb-3">
+            Three Main Steps
+          </h2>
+          <ol className="list-decimal list-inside space-y-2">
+            <li><strong>Divide</strong> – Split the problem into smaller parts</li>
+            <li><strong>Conquer</strong> – Solve each part (often using recursion)</li>
+            <li><strong>Combine</strong> – Merge the solutions</li>
+          </ol>
+        </div>
+
+        {/* BINARY SEARCH */}
+        <div className="bg-neutral-900 p-6 rounded-xl border border-yellow-400">
+          <h2 className="text-2xl font-bold text-yellow-400 mb-3">
+            Example 1: Binary Search (C)
+          </h2>
+          <p className="mb-4">
+            Binary Search repeatedly divides the array into half to find a target value.
+          </p>
+
+          <pre className="bg-black text-yellow-400 p-4 rounded-lg overflow-x-auto text-sm">
+{`int binarySearch(int arr[], int left, int right, int target) {
+  if (left <= right) {
+    int mid = (left + right) / 2;
+
+    if (arr[mid] == target)
+      return mid;
+    if (arr[mid] > target)
+      return binarySearch(arr, left, mid - 1, target);
+    else
+      return binarySearch(arr, mid + 1, right, target);
+  }
+  return -1;
+}`}
+          </pre>
+        </div>
+
+        {/* MERGE SORT */}
+        <div className="bg-neutral-900 p-6 rounded-xl border border-yellow-400">
+          <h2 className="text-2xl font-bold text-yellow-400 mb-3">
+            Example 2: Merge Sort (C)
+          </h2>
+          <p className="mb-4">
+            Merge Sort divides the array into halves, sorts them, and merges them back.
+          </p>
+
+          <pre className="bg-black text-yellow-400 p-4 rounded-lg overflow-x-auto text-sm">
+{`void mergeSort(int arr[], int left, int right) {
+  if (left < right) {
+    int mid = (left + right) / 2;
+    mergeSort(arr, left, mid);
+    mergeSort(arr, mid + 1, right);
+    merge(arr, left, mid, right);
+  }
+}`}
+          </pre>
+        </div>
+
+        {/* ADVANTAGES */}
+        <div className="bg-neutral-900 p-6 rounded-xl border border-yellow-400">
+          <h2 className="text-2xl font-bold text-yellow-400 mb-3">
+            Advantages of Divide and Conquer
+          </h2>
+          <ul className="list-disc list-inside space-y-2">
+            <li>Efficient for large problems</li>
+            <li>Easy to implement using recursion</li>
+            <li>Used in many fast algorithms</li>
+          </ul>
+        </div>
+
+        {/* CONCLUSION */}
+        <div className="bg-neutral-900 p-6 rounded-xl border border-yellow-400">
+          <h2 className="text-2xl font-bold text-yellow-400 mb-3">
+            Conclusion
+          </h2>
+          <p>
+            Divide and Conquer is a powerful strategy in computer science.
+            Algorithms like Binary Search and Merge Sort show how breaking problems
+            into smaller parts makes solutions faster and easier to manage.
+          </p>
+        </div>
+
+      </section>
+
+      {/* FOOTER */}
+      <footer className="bg-neutral-900 border-t border-yellow-400 text-center py-6 text-sm text-gray-400">
+        Divide and Conquer Presentation | C Language
+      </footer>
+
+    </main>
 
         
           {/* ================= RANDOMIZED ALGORITHMS ================= */}
